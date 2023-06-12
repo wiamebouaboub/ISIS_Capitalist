@@ -1,0 +1,17 @@
+
+<div><div *ngIf="!product.managerUnlocked" (click)="startFabrication()"> <button>Produit</button>  </div>
+    {{product.name}}
+    <span [innerHTML]=" product.cout| bigvalue"> </span>$
+  <div>Quantité : {{product.quantite}}</div>
+<div (click)="acheterProduit()"><button>Acheter x{{this.qt}} pour <span [innerHTML]="this.coutQt | bigvalue"> </span>$</button></div>
+  <app-my-progress-bar class="progressBar"
+  [run]="run" [auto]="auto"
+               frontcolor="#ff267d"
+               backcolor="#ffc9df"
+               [orientation]="orientation" 
+               [vitesse]="product.vitesse"
+               [initialValue]="initialValue"> 
+               <span>{{argentProduit}}</span>
+</app-my-progress-bar>
+</div>
+

@@ -1,0 +1,46 @@
+.header {
+    display: grid;
+    grid-template-columns: 25% 25% 30% 20%;
+    }
+   .main {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    }
+   .product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    }
+    .modal {
+        position: fixed; /* reste en place */
+        z-index: 2; /* au dessus du reste */
+        width: 800px; /* largeur */
+        height: 600px; /* hauteur */
+        overflow: auto; /* barre de scroll si besoin */
+        background-color: white; /* opaque */
+        border: solid;
+        top:10; /* a 10% du haut */
+        left:20%; /* a 20% de la gauche */
+       }
+
+       .boutonMulti{
+            position: fixed;
+            top: 5%;
+            left: 10px;
+            transform: translateY(-50%);          
+       }
+
+       .managers{
+        position: fixed;
+        top: 90%;
+        left: 10px;
+        transform: translateY(-50%);          
+   }
+
+   .product{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);      
+   }
+       
+  
