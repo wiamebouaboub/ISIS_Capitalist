@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Product,  Pallier } from 'world';
+import { Product,  Palier } from 'world';
 import { Orientation } from '../myprogressbar.component';
 import { WebserviceService } from '../webservice.service';
 
@@ -11,7 +11,7 @@ import { WebserviceService } from '../webservice.service';
 export class ProductComponent {
   world: any;
   product!: Product;
-  manager!:Pallier;
+  manager!:Palier;
   run = false;
   auto = false;
   orientation = Orientation.horizontal;
@@ -46,7 +46,7 @@ export class ProductComponent {
   @Output() notifyProduction: EventEmitter<{ p: Product, qt: number }> = new
     EventEmitter();
 
-  @Output() notifyBuy: EventEmitter<{ cout: number }> = new
+  @Output() notifyBuy: EventEmitter<{p:Product, cout: number }> = new
     EventEmitter();
 
 
@@ -128,7 +128,7 @@ export class ProductComponent {
     if (this._money >= this.coutQt) {
       this._money -= this.coutQt
       this.product.quantite += this.qt
-      this.notifyBuy.emit({ cout: this.coutQt });
+      this.notifyBuy.emit({p:this.product, cout: this.coutQt });
       this.product.cout = this.product.cout * Math.pow(this.product.croissance, this.product.quantite)
     }
   }

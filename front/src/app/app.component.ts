@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Product, World, Pallier } from 'world';
+import { Product, World, Palier } from 'world';
 import { WebserviceService } from './webservice.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -16,6 +16,9 @@ export class AppComponent {
   compteur = 0;
   showManagers: boolean = false;
   badgeManagers: number = 0;
+  showUnlockeds: boolean = false;
+
+
   
   constructor(private service: WebserviceService,private snackBar: MatSnackBar) {
     this.service.getWorld().then(
@@ -29,12 +32,14 @@ export class AppComponent {
     this.world.score += event.p.quantite * event.p.revenu * event.qt
     this.world.money += event.p.quantite * event.p.revenu * event.qt
     this.updateBadgeManagers();
+
   }
 
-  onProductBuy(event: { cout: number }) {
+  onProductBuy(event: {p:Product, cout: number }) {
     this.world.money -= event.cout;
     this.updateBadgeManagers();
-
+    this.debloqueUnlocked(event.p);
+    console.log("vitesse"+event.p.vitesse)
   }
 
   qtmulti: string = 'x1';
@@ -64,7 +69,7 @@ export class AppComponent {
     this.showManagers = !this.showManagers;
   }
 
-  hireManager(manager: Pallier) {
+  hireManager(manager: Palier) {
     if (this.world.money >= manager.seuil) {
       let product = this.world.products[manager.idcible - 1];
       product.managerUnlocked=true;
@@ -78,7 +83,26 @@ export class AppComponent {
 
   updateBadgeManagers() {
     const managers = this.world.managers;
-  const availableManagers = managers.filter(manager => manager.seuil <= this.world.money && !manager.unlocked);
-  this.badgeManagers = availableManagers.length;
+    const availableManagers = managers.filter(manager => manager.seuil <= this.world.money && !manager.unlocked);
+    this.badgeManagers = availableManagers.length;
   }
+
+ debloqueUnlocked(p:Product) {
+  for (let i = 0; i < p.paliers.length; i++) {
+  if (!p.paliers[i].unlocked) {
+      if(p.quantite>=p.paliers[i].seuil){
+        p.paliers[i].unlocked=true;
+        p.timeleft/=2;
+        p.vitesse/=2;
+      }
+    }
+  }
+  }
+
+  afficherUnlocked() {
+    this.showUnlockeds = !this.showUnlockeds;
+  }
+
+  /*const availableUnlocked = managers.filter(manager => manager.seuil <= this.world.money && !manager.unlocked);
+  */
 }

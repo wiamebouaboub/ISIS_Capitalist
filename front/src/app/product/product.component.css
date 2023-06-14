@@ -1,3 +1,51 @@
 .progressbar{
-    height:100px;
+    height:700px;
+    width: 50px;
+    
 }
+.body {
+    background: linear-gradient(to bottom right, #f5f1f1, #efeaed);
+    border-radius: 10px;
+    width: 500px;
+  height: 150px;
+  margin-top: 10px;    /* Espacement en haut */
+  margin-bottom: 10px; /* Espacement en bas */
+  margin-left: 10px;   /* Espacement à gauche */
+  margin-right: 10px; 
+  }
+
+.achat{
+    left: 43%;
+    transform: translateY(-50%);
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    background: linear-gradient(to bottom right, #ecb5b5, #ECB1AD);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+.name{
+    font-family: "Arial", sans-serif;
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 2px;
+  line-height: 1.5;
+}
+/*.prix{
+    border: 1px solid #000000;
+  border-radius: 5px;
+  /*padding: 5px;
+  width: 100px;
+}*/
+/*
+.produit{
+    display: grid;
+  grid-template-columns: 1fr 200px 2fr;
+  align-items: left;
+}*/
