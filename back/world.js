@@ -1,6 +1,4 @@
 module.exports = {
-    "data": {
-    "getWorld": {
     "name": "SephoraCapitalist",
     "logo": "public/icones/ecolo.jpg",
     "money": 2,
@@ -571,6 +569,4 @@ module.exports = {
         "unlocked": false
       }
     ]
-}
-    }
 };
