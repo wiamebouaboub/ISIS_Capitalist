@@ -105,10 +105,12 @@ function updateScore(world) {
           production = 1 + Math.floor((elapsedTime - product.timeleft) / product.vitesse)
           product.timeleft = product.vitesse - ((elapsedTime - product.timeleft) % product.vitesse)
           world.money += product.quantite * product.revenu * production
+          world.score += product.quantite * product.revenu *production
         } else {
           production = 1
           product.timeleft = 0
           world.money += product.quantite * product.revenu *production 
+          world.score += product.quantite * product.revenu *production
         }
       }
     }
