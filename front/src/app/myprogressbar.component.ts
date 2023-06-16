@@ -7,7 +7,7 @@ export enum Orientation {
 
 @Component({
   selector: 'app-my-progress-bar',
-  template: '<canvas style="height: 1000% ; width: 20%" #canvasRef><ng-content></ng-content></canvas>',
+  template: '<canvas style="height: 10% ; width: 70%" #canvasRef><ng-content></ng-content></canvas>',
 })
 export class MyProgressBarComponent implements OnChanges, OnDestroy{
 

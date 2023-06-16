@@ -1,6 +1,6 @@
 module.exports = {
     "name": "SephoraCapitalist",
-    "logo": "public/icones/ecolo.jpg",
+    "logo": "/icones/sephora.png",
     "money": 2,
     "score": 2,
     "totalangels": 0,

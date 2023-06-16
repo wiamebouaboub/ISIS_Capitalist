@@ -50,7 +50,7 @@ export class ProductComponent {
     EventEmitter();
 
 
-  constructor(private service: WebserviceService) {
+  constructor(public service: WebserviceService) {
     setInterval(() => {
       this.calcScore()
     }, 100);
@@ -62,6 +62,7 @@ export class ProductComponent {
       this.auto = false;
       this.product.timeleft = this.product.vitesse;
       this.run = true;
+      this.service.lancerProduction(this.product);
     }
   }
 
@@ -130,6 +131,7 @@ export class ProductComponent {
       this.product.quantite += this.qt
       this.notifyBuy.emit({p:this.product, cout: this.coutQt });
       this.product.cout = this.product.cout * Math.pow(this.product.croissance, this.product.quantite)
+      this.service.acheterProduit(this.product,this.qt);
     }
   }
 

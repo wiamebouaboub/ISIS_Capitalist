@@ -1,16 +1,20 @@
 <div class="body">
 
   <div class="produit">
-    <button class="production" *ngIf="!product.managerUnlocked" (click)="startFabrication()"> {{product.logo}}</button>
-    <div class="name">
-    {{product.name}}
-    <div class="prix"><span [innerHTML]=" product.cout| bigvalue"> </span>$</div>
-    <div>Quantité : {{product.quantite}}</div></div>
-    <button class="achat" (click)="acheterProduit()">Acheter x{{this.qt}} pour <span [innerHTML]="this.coutQt | bigvalue">
+    <button class="image-button" (click)="startFabrication()" [disabled]="product.managerUnlocked"> <img
+        [src]="service.server + product.logo"></button>
+  <div class="texte">
+      <div class="name">
+        {{product.name}}
+        <div class="prix"><span [innerHTML]=" product.cout| bigvalue"> </span>$</div>
+        <div>Quantité : {{product.quantite}}</div>
+      </div>
+      <button class="achat" (click)="acheterProduit()">Acheter x{{this.qt}} pour <span
+          [innerHTML]="this.coutQt | bigvalue">
         </span>$</button>
-    <app-my-progress-bar class="progressBar" [run]="run" [auto]="auto" frontcolor="#ec8ebd" backcolor="#ffc9df"
-      [orientation]="orientation" [vitesse]="product.vitesse" [initialValue]="initialValue">
-      <span>{{argentProduit}}</span>
-    </app-my-progress-bar>
+      <app-my-progress-bar class="progressBar" [run]="run" [auto]="auto" frontcolor="#ec8ebd" backcolor="#ffc9df"
+        [orientation]="orientation" [vitesse]="product.vitesse" [initialValue]="initialValue">
+        <span>{{argentProduit}}</span>
+      </app-my-progress-bar>
   </div>
-</div>
+  </div>

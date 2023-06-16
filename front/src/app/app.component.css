@@ -1,12 +1,10 @@
-/*.header {
-    
-    }
-   .main {
-    display: grid;
-    }*/
 .product {
     display: grid;
     grid-template-columns: 1fr 1fr;
+}
+
+.title{
+    font-size: 25px;
 }
 
 .modal {
@@ -27,19 +25,30 @@
     /* a 10% du haut */
     left: 20%;
     /* a 20% de la gauche */
+    background: linear-gradient(to bottom right, #f5e2e2, #f2b4d8);
+    font-family: "Arial", sans-serif;
+    font-size: 15px;
+    font-style: italic;
+    letter-spacing: 2px;
+    line-height: 1.5;
+
+}
+
+.managername{
+    font-weight: bold;
 }
 
 .boutonMulti {
     position: fixed;
-    top: 5%;
+    top: 20%;
     left: 10px;
     transform: translateY(-50%);
     left: 0%;
     transform: translateY(-50%);
-    width: 300px;
+    width: 100px;
     margin-left: auto;
     margin-right: auto;
-    background: linear-gradient(to bottom right, #ecb5b5, #ECB1AD);
+    background: linear-gradient(to bottom right, #f0e0e0, #F8A0D4);
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -58,7 +67,7 @@
     width: 200px;
     margin-left: auto;
     margin-right: auto;
-    background: linear-gradient(to bottom right, #ecb5b5, #ECB1AD);
+    background: linear-gradient(to bottom right, #f5e2e2, #F8A0D4);
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -69,6 +78,32 @@
     transition: background-color 0.3s ease;
 }
 
+.closebutton {
+    position: absolute;
+    top: 10px; /* Distance depuis le haut */
+    right: 10px; 
+    background: linear-gradient(to bottom right, #f5e2e2, #F8A0D4);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.hirebutton {
+    background: linear-gradient(to bottom right, #f5e2e2, #F8A0D4);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
 .unlocked {
     position: fixed;
     top: 90%;
@@ -77,7 +112,7 @@
     width: 200px;
     margin-left: auto;
     margin-right: auto;
-    background: linear-gradient(to bottom right, #ecb5b5, #ECB1AD);
+    background: linear-gradient(to bottom right, #efdfdf, #F8A0D4);
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -88,25 +123,137 @@
     transition: background-color 0.3s ease;
 }
 
+.cash {
+    position: fixed;
+    top: 90%;
+    left: 17%;
+    transform: translateY(-50%);
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    background: linear-gradient(to bottom right, #efdfdf, #F8A0D4);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
 
+.product {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-.product{
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);    
+}
 
-   }
+.img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #000;
+    /* Bordure de 2 pixels de large et de couleur noire */
+    border-radius: 8px;
+    /* Coins arrondis avec un rayon de 8 pixels */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
 
+.argent {
+    width: 35px;
+    /* largeur souhaitée */
+    height: 35px;
+    margin-right: 10px;
+
+}
+
+.scoreimg {
+    width: 35px;
+    /* largeur souhaitée */
+    height: 35px;
+    margin-right: 10px;
+
+}
 
 .app {
-    background: linear-gradient(to bottom right, #f8dddd, #ECB1AD);
+    /*background: linear-gradient(to bottom right, #f4dfdf, #F8A0D4);*/
+
+}
+
+.moneyscore {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+body {
+    background: linear-gradient(to bottom right, #f8dddd, #F8A0D4);
+    background-image: url("paillette.gif");
+
+}
+
+.money {
+    background: linear-gradient(to bottom right, #f8dddd, #f1bada);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(237, 235, 235, 0.1);
+    padding: 20px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Arial", sans-serif;
+    font-size: 17x;
+    font-style: italic;
+    font-weight: bold;
+    letter-spacing: 2px;
+    line-height: 1.5;
+    margin-right: 20px;
+
+}
+
+.score {
+    background: linear-gradient(to bottom right, #f8dddd, #f1bada);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(244, 241, 241, 0.1);
+    padding: 20px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Arial", sans-serif;
+    font-size: 17px;
+    font-style: italic;
+    font-weight: bold;
+    letter-spacing: 2px;
+    line-height: 1.5;
+    margin-left: 20px;
+
+}
+
+.manager {
     display: grid;
-    grid-template-columns: 15% 25% 80% 80%;
-}
+    grid-template-columns: auto 1fr;
+    /* Première colonne pour l'image, deuxième colonne pour le texte */
+    grid-gap: 2px;
+    margin-bottom: 50px;
+    margin-top: 60px;
 
-body{
-    background: linear-gradient(to bottom right, #f8dddd, #f5c7de);
-    background-image: url("5898436.jpg");
 
-}
+    /* Espacement entre l'image et le texte */
+  }
+  
+  .image {
+    grid-column: 1;
+    /* Place l'image dans la première colonne */
+    margin: -20px 0 0 0;
+    /* Déplace l'image de 5 pixels vers le haut en ajustant la marge supérieure */
+  
+  }
+  
+  .texte {
+    grid-column: 2;
+    /* Place le texte dans la deuxième colonne */
+  }

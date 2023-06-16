@@ -1,9 +1,6 @@
 <body>
   <div class="app">
-    <span id="worldname"> {{world.name}} </span>
-    <div>Money : <span [innerHTML]="world.money | bigvalue"> </span></div>
-    <div>Score : <span [innerHTML]="world.score | bigvalue"> </span></div>
-
+    <!--<span id="worldname"> {{world.name}} </span>-->
     <button class="boutonMulti" (click)="changeQtmulti()">{{ qtmulti }}</button>
     <!--<div clas="id"> ID du joueur </div>-->
     <div class="product">
@@ -11,54 +8,77 @@
         [qtmulti]="qtmulti" [money]="world.money" (notifyBuy)="onProductBuy($event)">
       </app-product>
     </div>
-    <button class="managers" mat-raised-button color="primary" [matBadge]="badgeManagers"
-      [matBadgeHidden]="badgeManagers==0" (click)="showManagers = !showManagers">
-      Managers
-    </button>
+
+    <!--Manager-->
+    <button class="managers" mat-raised-button color="accent" [matBadge]="badgeManagers"
+      [matBadgeHidden]="badgeManagers==0" (click)="showManagers = !showManagers">Managers</button>
     <div *ngIf="showManagers" class="modal">
-      <div>
-        <h1 class="title">Managers make you feel better !</h1>
-      </div>
+        <h1 class="title">Achète des managers pour booster tes ventes !</h1>
       <div *ngFor="let manager of world.managers">
         <div *ngIf="!manager.unlocked" class="managerslayout">
-          <div>
-            <div class="logo"><img class="round" [attr.src]="server+manager.logo" /> </div>
-          </div>
-          <div>
-            <div class="managername"> {{ manager.name}} </div>
-            <!-- <div class="managercible"> {{ world.products[manager.idcible].name }} </div> -->
-            <div class="managercost"> {{ manager.seuil}} </div>
-          </div>
-          <div>
-            <button class="hirebutton" (click)="hireManager(manager)"
-              [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</button>
+          <div class="manager">
+            <div class="image">
+              <div class="logo"><img class="round" [src]="service.server+manager.logo" /> </div>
+            </div>
+            <div class="texte">
+              <div class="managername"> {{ manager.name}} </div>
+              <div class="managercost"> {{ manager.seuil}}$ </div>
+              <button class="hirebutton" (click)="hireManager(manager)"
+                [ngClass]="{'selectable' : (world.money >= manager.seuil)}">Hire !</button>
+            </div>
           </div>
         </div>
+        <button class="closebutton" mat-raisedbutton color="primary" (click)="afficherManagers()">Close</button>
       </div>
-      <button class="closebutton" mat-raisedbutton color="primary" (click)="afficherManagers()">Close</button>
     </div>
-    <button class="unlocked" (click)="showUnlockeds = !showUnlockeds">
-      Unlocked
-    </button>
 
+    <!--Unlock-->
+    <button class="unlocked" (click)="showUnlockeds = !showUnlockeds">Unlock</button>
     <div *ngIf="showUnlockeds" class="modal">
-      <div>
-        <h1 class="title">Unlockeds make you feel better !</h1>
-      </div>
+      <h1 class="title">Unlockeds make you feel better !</h1>
       <div *ngFor="let product of world.products">
-        <div *ngFor="let palier of product.paliers">
-          <div *ngIf="!palier.unlocked" class="managerslayout">
-            <div>
-              <div class="logo"><img class="round" [attr.src]="server+palier.logo" /> </div>
-            </div>
-            <div>
-              <div class="managername"> {{ palier.name}} </div>
-              <div class="managercost"> {{ palier.seuil}} </div>
-            </div>
-          </div>
-        </div>
+        <div class="logo"><img class="round" [attr.src]="server+getNextFalseElement(product)?.logo" /> </div>
+        <div>{{getNextFalseElement(product)?.name}}</div>
+        <div>{{getNextFalseElement(product)?.seuil}}</div>
       </div>
       <button class="closebutton" mat-raisedbutton color="primary" (click)="afficherUnlocked()">Close</button>
+    </div>
+
+    <!--Cash Upgrade-->
+    <button class="cash" mat-raised-button color="warn" [matBadge]="badgeCash"
+      [matBadgeHidden]="badgeCash==0" (click)="showCash = !showCash">Cash Upgrade</button>
+    <div *ngIf="showCash" class="modal">
+        <h1 class="title">Achète des managers pour booster tes ventes !</h1>
+      <div *ngFor="let upgrade of world.upgrades">
+        <div *ngIf="!upgrade.unlocked" class="managerslayout">
+          <div class="manager">
+            <div class="image">
+              <div class="logo"><img class="round" [src]="service.server+upgrade.logo" /> </div>
+            </div>
+            <div class="texte">
+              <div class="managername"> {{ upgrade.name}} </div>
+              <div class="managercost"> {{ upgrade.seuil}}$ </div>
+              <button class="hirebutton" (click)="acheterCashUpgrades(upgrade)"
+                [ngClass]="{'selectable' : (world.money >= upgrade.seuil)}">Acheter</button>
+            </div>
+          </div>
+        </div>
+        <button class="closebutton" mat-raisedbutton color="primary" (click)="afficherCashUpgrade()">Close</button>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="moneyscore">
+    <div class="money">
+      <img class="argent" src="{{service.server}}/icones/argent.png" />
+      <span [innerHTML]="world.money | bigvalue"> </span>
+    </div>
+    <div class="img"><img [src]="service.server+world.logo" /></div>
+
+    <div class="score">
+      <img class="scoreimg" src="{{service.server}}/icones/score.png" />
+      <span [innerHTML]="world.score | bigvalue"> </span>
     </div>
   </div>
 </body>
