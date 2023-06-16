@@ -1,8 +1,8 @@
 {
     "name": "Nom du monde",
     "logo": "icones/logomonde.jpg",
-    "money": 129.57664396,
-    "score": 200,
+    "money": 10000,
+    "score": 10000,
     "totalangels": 0,
     "activeangels": 0,
     "angelbonus": 2,
@@ -16,7 +16,7 @@
             "croissance": 1.07,
             "revenu": 1,
             "vitesse": 500,
-            "quantite": 5,
+            "quantite": 1,
             "timeleft": 0,
             "managerUnlocked": false,
             "palliers": [

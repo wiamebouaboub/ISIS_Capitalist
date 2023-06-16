@@ -1,4 +1,4 @@
-const { products } = require("./world")
+const { products, upgrades } = require("./world")
 const fs = require('fs');
 
 function saveWorld(context) {
@@ -37,10 +37,11 @@ module.exports = {
 
         product.cout = product.cout * Math.pow(croissance, product.quantite);
       }
+      UnlockProduct(product)
       saveWorld(context)
       return product;
-
-    },
+    }
+    ,
     lancerProductionProduit(parent, args, context) {
       updateScore(context.world)
 
@@ -79,16 +80,64 @@ module.exports = {
       }
       saveWorld(context);
       return manager;
-    }
-  },
-};
+    },
+    acheterCashUpgrade(parent, args, context) {
+      updateScore(context.world)
+      let upgrade = context.world.upgrades.find((u) => u.name == args.name);
+      if (!upgrade) {
+        throw new Error(`L'upgrade de nom ${args.name} n'existe pas.`);
+      }
+      let money = context.world.money;
+      let products = context.world.products;
+      if (money >= upgrade.seuil) {
+        money -= upgrade.seuil;
+      };
+
+      if (upgrade.idcible == -1) {
+          for (let i = 0; i < products.length; i++) {
+            if (upgrade.typeratio === "vitesse") {
+              products[i].timeleft /= upgrade.ratio;
+              products[i].vitesse /= upgrade.ratio;
+            }
+            else if (upgrade.typeratio === "gain") {
+              products[i].revenu *= upgrade.ratio
+            }
+          }
+        } 
+        else {
+          for (let i = 0; i < products.length; i++) {
+            if (upgrade.idcible == products[i].id) {
+              if (upgrade.typeratio === "vitesse") {
+                products[i].timeleft /= upgrade.ratio;
+                products[i].vitesse /= upgrade.ratio;
+              }
+              else if (upgrade.typeratio === "gain") {
+                products[i].revenu *=2
+                products[i].revenu
+                upgrade.unlocked = true;
+                
+                //products[i].revenu *= upgrade.ratio
+                
+              }
+            }
+          }
+        }upgrade.unlocked = true;
+        saveWorld(context);
+        return upgrade;
+        
+      } 
+      
+    },
+  }
+;
+
 
 
 
 
 function updateScore(world) {
 
-  const elapsedTime = Date.now() -parseInt(world.lastupdate);
+  const elapsedTime = Date.now() - parseInt(world.lastupdate);
 
   //world.lastUpdate = currentTime;
 
@@ -105,12 +154,12 @@ function updateScore(world) {
           production = 1 + Math.floor((elapsedTime - product.timeleft) / product.vitesse)
           product.timeleft = product.vitesse - ((elapsedTime - product.timeleft) % product.vitesse)
           world.money += product.quantite * product.revenu * production
-          world.score += product.quantite * product.revenu *production
+          world.score += product.quantite * product.revenu * production
         } else {
           production = 1
           product.timeleft = 0
-          world.money += product.quantite * product.revenu *production 
-          world.score += product.quantite * product.revenu *production
+          world.money += product.quantite * product.revenu * production
+          world.score += product.quantite * product.revenu * production
         }
       }
     }
@@ -118,59 +167,35 @@ function updateScore(world) {
 
   }
 
+}
 
+function appliquerPalier(product, paliers) {
 
-
-    /*if (product.managerUnlocked) {
-      const productionTime = product.timeleft;
-      let numProductions = Math.floor(elapsedTime / productionTime);
-
-      if (numProductions > 0) {
-        // Mettre à jour le score en fonction du nombre de productions complètes
-        world.setMoney(world.getMoney() + product.gains * numProductions);
-
-        // Mettre à jour le temps restant pour la prochaine production
-        const remainingTime = elapsedTime % productionTime;
-        product.timeleft = product.vitesse - remainingTime;
-      }
-    } else if (product.timeleft > 0) {
-      // Mettre à jour le temps restant pour la prochaine production
-      product.timeleft = Math.max(product.timeleft - elapsedTime, 0);
-    }*/
+  paliers.unlocked = true;
+  if (paliers.typeratio == "vitesse") {
+    product.timeleft /= paliers.ratio;
+    product.vitesse /= paliers.ratio;
   }
+  else if (paliers.typeratio == "gain") {
+    product.revenu *= paliers.ratio
+  }
+}
 
-
-
-
-
-/*calcScore(parent, args, context) {
-  const elapsedTime = Date.now() - context.world.lastUpdate;
-  context.world.lastUpdate = Date.now();
- 
-  // Pour chaque produit
-  context.world.products.forEach(product => {
-    const manager = context.world.managers.find(m => m.product === product.id);
-    let numProduced = 0;
- 
-    // Si le produit a un manager, on calcule combien de fois sa production complète a pu se produire depuis la dernière mise à jour
-    if (manager) {
-      const timePerCycle = product.vitesse / manager.boost;
-      numProduced = Math.floor(elapsedTime / timePerCycle);
-      product.timeleft = Math.max(product.timeleft - elapsedTime + numProduced * timePerCycle, 0);
+function UnlockProduct(product) {
+  //p= context.world.product
+  for (let i = 0; i < product.paliers.length; i++) {
+    if (product.quantite >= product.paliers[i].seuil) {
+      appliquerPalier(product, product.paliers[i])
     }
-    // Sinon on calcule le nombre de produits créés
-    else if (product.timeleft > 0) {
-      const timePerProduct = product.vitesse;
-      numProduced = Math.floor(elapsedTime / timePerProduct);
-      product.timeleft = Math.max(product.timeleft - elapsedTime + numProduced * timePerProduct, 0);
-    }
- 
-    // On ajoute les gains au score
-    const earnings = numProduced * product.cout / 2;
-    // On suppose que le prix de vente est égal à la moitié du coût d'achat
-    context.world.score += earnings;
-  });
-}*/
+
+  }
+}
+
+
+
+
+
+
 
 
 
