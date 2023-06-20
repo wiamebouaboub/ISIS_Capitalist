@@ -132,6 +132,7 @@ export class ProductComponent {
       this.notifyBuy.emit({p:this.product, cout: this.coutQt });
       this.product.cout = this.product.cout * Math.pow(this.product.croissance, this.product.quantite)
       this.service.acheterProduit(this.product,this.qt);
+      console.log(this._money)
     }
   }
 

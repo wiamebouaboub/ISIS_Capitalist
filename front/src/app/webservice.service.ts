@@ -12,6 +12,7 @@ export class WebserviceService {
   user = '';
   constructor() { };
   createClient() {
+    console.log("user"+this.user)
     return createClient({
       url: this.server + "/graphql", fetchOptions: () => {
         return {

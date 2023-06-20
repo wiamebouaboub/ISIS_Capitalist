@@ -38,27 +38,29 @@ module.exports = {
         product.cout = product.cout * Math.pow(croissance, product.quantite);
       }
       UnlockProduct(product)
+      AllUnlock(context)
+      updateScore(context.world)
       saveWorld(context)
+  console.log("vitesse"+product.vitesse)
+
       return product;
     }
     ,
     lancerProductionProduit(parent, args, context) {
       updateScore(context.world)
-
       // Recherche du produit dans le monde
       const product = context.world.products.find((p) => p.id === args.id);
       if (!product) {
         throw new Error(`Le produit avec l'id ${args.id} n'existe pas`);
       }
-
       // Affectation de la propriété vitesse à la propriété timeleft
       product.timeleft = product.vitesse;
       saveWorld(context);
+      console.log(context.world.money);
       return product;
     },
     engagerManager(parent, args, context) {
       updateScore(context.world)
-
       // Recherche du manager dans le monde
       const manager = context.world.managers.find((m) => m.name === args.name);
       if (!manager) {
@@ -112,61 +114,47 @@ module.exports = {
                 products[i].vitesse /= upgrade.ratio;
               }
               else if (upgrade.typeratio === "gain") {
-                products[i].revenu *=2
-                products[i].revenu
+                products[i].revenu *=upgrade.ratio
                 upgrade.unlocked = true;
-                
-                //products[i].revenu *= upgrade.ratio
-                
               }
             }
           }
         }upgrade.unlocked = true;
         saveWorld(context);
         return upgrade;
-        
-      } 
-      
+      }  
     },
   }
 ;
 
 
-
-
-
 function updateScore(world) {
-
-  const elapsedTime = Date.now() - parseInt(world.lastupdate);
-
-  //world.lastUpdate = currentTime;
-
+  let elapsedTime = Date.now() - parseInt(world.lastupdate);
   for (const product of world.products) {
+    const production = calcNbrProduction(product, elapsedTime);
+    world.money += product.quantite * product.revenu * production
+      world.score += product.quantite * product.revenu * production
+  };
+  world.lastupdate = Date.now().toString();
+}
 
-    let production = 0
-    if (product.timeleft > 0) {
-      if (product.timeleft > elapsedTime) {
-        product.timeleft -= elapsedTime
-
-      }
-      else {
-        if (product.managerUnlocked) {
-          production = 1 + Math.floor((elapsedTime - product.timeleft) / product.vitesse)
-          product.timeleft = product.vitesse - ((elapsedTime - product.timeleft) % product.vitesse)
-          world.money += product.quantite * product.revenu * production
-          world.score += product.quantite * product.revenu * production
-        } else {
-          production = 1
-          product.timeleft = 0
-          world.money += product.quantite * product.revenu * production
-          world.score += product.quantite * product.revenu * production
-        }
+function calcNbrProduction(product, elapsedTime) {
+  let production = 0
+  if (product.timeleft > 0) {
+    if (product.timeleft > elapsedTime) {
+      product.timeleft -= elapsedTime
+    }
+    else {
+      if (product.managerUnlocked) {
+        production = 1 + Math.floor((elapsedTime - product.timeleft) / product.vitesse)
+        product.timeleft = product.vitesse - ((elapsedTime - product.timeleft) % product.vitesse)
+      } else {
+        production = 1
+        product.timeleft = 0
       }
     }
-    return production;
-
   }
-
+  return production;
 }
 
 function appliquerPalier(product, paliers) {
@@ -182,10 +170,33 @@ function appliquerPalier(product, paliers) {
 }
 
 function UnlockProduct(product) {
-  //p= context.world.product
   for (let i = 0; i < product.paliers.length; i++) {
-    if (product.quantite >= product.paliers[i].seuil) {
+    if (product.quantite >= product.paliers[i].seuil && product.paliers[i].unlocked==false) {
       appliquerPalier(product, product.paliers[i])
+    }
+
+  }
+}
+
+function AllUnlock(context) {
+  let world = context.world
+  let min = Math.min(...world.products.map( p => p.quantite))
+
+  for (let i = 0; i < world.allunlocks.length; i++) {
+    let allunlock = world.allunlocks[i];
+    if (allunlock.seuil <= min  && allunlock.unlocked==false ) {
+      allunlock.unlocked = true;
+      for (let j = 0; j < world.products.length; j++) {
+
+        if (allunlock.typeratio == "vitesse") {
+          world.products[j].timeleft /= allunlock.ratio;
+          world.products[j].vitesse /= allunlock.ratio;
+        }
+        else if (allunlock.typeratio == "gain") {
+          world.products[j].revenu *= allunlock.ratio
+        }
+      }
+
     }
 
   }

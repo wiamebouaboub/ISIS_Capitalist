@@ -19,23 +19,40 @@ export class AppComponent {
   showUnlockeds: boolean = false;
   showCash: boolean = false;
   badgeCash: number = 0;
+  public username = "";
+  showAllunlock: boolean=false;
 
 
 
 
   
   constructor(public service: WebserviceService,private snackBar: MatSnackBar) {
+    const username = localStorage.getItem("username");
+    this.username = username ? username : 'coco';
+    service.user = this.username;
+    
+    console.log("servic"+service.user)
     this.service.getWorld().then(
       world => {
         this.world = world.data.getWorld;
       });
+      
+  }
 
+  onUsernameChanged(event:Event ){
+    let value=event.target as HTMLInputElement;
+    if(value){
+    localStorage.setItem("username", value.value);
+    this.service.user = value.value;
+    this.username=value.value
+    }
   }
   popMessage(message : string) : void { this.snackBar.open(message, "", { duration : 3000 })}
   onProductionDone(event: { p: Product, qt: number }) {
     this.world.score += event.p.quantite * event.p.revenu * event.qt
     this.world.money += event.p.quantite * event.p.revenu * event.qt
     this.updateBadgeManagers();
+    this.updateBadgeCash();
 
   }
 
@@ -43,7 +60,7 @@ export class AppComponent {
     this.world.money -= event.cout;
     this.updateBadgeManagers();
     this.debloqueUnlocked(event.p);
-    console.log("vitesse"+event.p.vitesse)
+    this.allUnlock();
   }
 
   qtmulti: string = 'x1';
@@ -103,7 +120,8 @@ export class AppComponent {
   }
 
  debloqueUnlocked(p:Product) {
-  for (let i = 0; i <= p.paliers.length; i++) {
+  for (let i = 0; i < p.paliers.length; i++) {
+    console.log("palier:"+ p.paliers[i])
   if (!p.paliers[i].unlocked) {
       if(p.quantite>=p.paliers[i].seuil){
         p.paliers[i].unlocked=true;
@@ -117,6 +135,8 @@ export class AppComponent {
       }
     }
   }
+  console.log("vitesse"+p.vitesse)
+
   }
   getNextFalseElement(product:Product): Palier  | undefined{
     return product.paliers.find((item) => item.unlocked === false);
@@ -130,6 +150,10 @@ export class AppComponent {
     this.showCash = !this.showCash;
   }
 
+  afficherAllunlock() {
+    this.showAllunlock = !this.showAllunlock;
+  }
+
   updateBadgeCash() {
     const upgrades = this.world.upgrades;
     const availableCash = upgrades.filter(upgrade => upgrade.seuil <= this.world.money && !upgrade.unlocked);
@@ -137,10 +161,6 @@ export class AppComponent {
   }
 
   acheterCashUpgrades(upgrade: Palier){
-    console.log("unlocked "+upgrade.unlocked)
-    console.log("name "+upgrade.name)
-    console.log("typeratio "+upgrade.typeratio)
-    console.log(this.world.products[0].vitesse)
     if (this.world.money >= upgrade.seuil) {
       upgrade.unlocked = true;
       if (upgrade.idcible == -1) {
@@ -155,7 +175,6 @@ export class AppComponent {
         }
       }
       else {
-        debugger;
         let product=this.world.products[upgrade.idcible-1]
             if (upgrade.typeratio == 'vitesse') {
               product.timeleft /= upgrade.ratio;
@@ -165,16 +184,28 @@ export class AppComponent {
               product.revenu*=upgrade.ratio
             }
           }
-          console.log(upgrade.unlocked)
-          console.log("name "+upgrade.name)
-          console.log("typeratio "+upgrade.typeratio)
-          console.log(this.world.products[0].vitesse)
-    this.service.acheterCashUpgrade(upgrade);
-
     }
+    this.service.acheterCashUpgrade(upgrade);
   } 
-}
 
-  /*const availableUnlocked = managers.filter(manager => manager.seuil <= this.world.money && !manager.unlocked);
-  */
+  allUnlock() {  
+    let min = Math.min(...this.world.products.map( p => p.quantite))
+  
+    for (let i = 0; i < this.world.allunlocks.length; i++) {
+      let allunlock = this.world.allunlocks[i];
+      if (allunlock.seuil <= min  && allunlock.unlocked==false ) {
+        allunlock.unlocked = true;
+        for (let j = 0; j < this.world.products.length; j++) {
+  
+          if (allunlock.typeratio == "vitesse") {
+            this.world.products[j].timeleft /= allunlock.ratio;
+            this.world.products[j].vitesse /= allunlock.ratio;
+          }
+          else if (allunlock.typeratio == "gain") {
+            this.world.products[j].revenu *= allunlock.ratio
+          }
+        }
+      }}
+}}
+
 

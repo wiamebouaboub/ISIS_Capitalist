@@ -8,12 +8,14 @@
         [qtmulti]="qtmulti" [money]="world.money" (notifyBuy)="onProductBuy($event)">
       </app-product>
     </div>
-
+    <input type="text" [(ngModel)]="username" (change)="onUsernameChanged($event)" />
+    <button class="refreshbutton" onclick="location.reload()">↻</button>
+    <p>Id du joueur:</p>
     <!--Manager-->
     <button class="managers" mat-raised-button color="accent" [matBadge]="badgeManagers"
       [matBadgeHidden]="badgeManagers==0" (click)="showManagers = !showManagers">Managers</button>
     <div *ngIf="showManagers" class="modal">
-        <h1 class="title">Achète des managers pour booster tes ventes !</h1>
+      <h1 class="title">Achète des managers pour automatiser tes ventes !</h1>
       <div *ngFor="let manager of world.managers">
         <div *ngIf="!manager.unlocked" class="managerslayout">
           <div class="manager">
@@ -35,20 +37,34 @@
     <!--Unlock-->
     <button class="unlocked" (click)="showUnlockeds = !showUnlockeds">Unlock</button>
     <div *ngIf="showUnlockeds" class="modal">
-      <h1 class="title">Unlockeds make you feel better !</h1>
+      <h1 class="title">Débloque des unlocks pour booster tes ventes !</h1>
       <div *ngFor="let product of world.products">
-        <div class="logo"><img class="round" [attr.src]="server+getNextFalseElement(product)?.logo" /> </div>
+        <div class="logo"><img class="round" [attr.src]="service.server+getNextFalseElement(product)?.logo" /> </div>
         <div>{{getNextFalseElement(product)?.name}}</div>
         <div>{{getNextFalseElement(product)?.seuil}}</div>
       </div>
       <button class="closebutton" mat-raisedbutton color="primary" (click)="afficherUnlocked()">Close</button>
     </div>
 
+    <!--AllUnlock-->
+    <button class="allunlock" (click)="showAllunlock= !showAllunlock">Allunlock</button>
+    <div *ngIf="showAllunlock" class="modal">
+      <h1 class="title">Débloque des allunlocks pour booster tes ventes !</h1>
+      <div *ngFor="let allunlock of world.allunlocks">
+        <div *ngIf="!allunlock.unlocked" class="managerslayout">
+          <div class="logo"><img class="round" [attr.src]="service.server+allunlock.logo" /> </div>
+          <div>{{allunlock.name}}</div>
+          <div>{{allunlock.seuil}}</div>
+        </div>
+      </div>
+      <button class="closebutton" mat-raisedbutton color="primary" (click)="afficherAllunlock()">Close</button>
+    </div>
+
     <!--Cash Upgrade-->
-    <button class="cash" mat-raised-button color="warn" [matBadge]="badgeCash"
-      [matBadgeHidden]="badgeCash==0" (click)="showCash = !showCash">Cash Upgrade</button>
+    <button class="cash" mat-raised-button color="warn" [matBadge]="badgeCash" [matBadgeHidden]="badgeCash==0"
+      (click)="showCash = !showCash">Cash Upgrade</button>
     <div *ngIf="showCash" class="modal">
-        <h1 class="title">Achète des managers pour booster tes ventes !</h1>
+      <h1 class="title">Achète des cash upgrades pour augmenter tes ventes !</h1>
       <div *ngFor="let upgrade of world.upgrades">
         <div *ngIf="!upgrade.unlocked" class="managerslayout">
           <div class="manager">
